@@ -4,14 +4,16 @@ Este repositório reúne exercícios desenvolvidos durante meus estudos iniciais
 
 Os exercícios abordam conceitos fundamentais da programação web, como:
 
-entrada de dados com inputs
+entrada de dados com inputs;
 
-eventos de clique em botões
+eventos de clique em botões;
 
-manipulação de texto
+manipulação de texto;
 
-uso de variáveis
+uso de variáveis;
 
-funções em JavaScript
+funções em JavaScript;
 
-exibição de resultados com alert
+exibição de resultados com alert;
+
+Este repositório faz parte da minha evolução como desenvolvedor.
