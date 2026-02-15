@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Olá, seja Bem-Vindo!</h1>
+
+    <p>Digite o nome da Rua/Avenida/Vila</p>
+    <input type="text" id="ipt_rua">
+
+    <p>Número da casa</p>
+    <input type="number" id="ipt_numero">
+
+    <button onclick="ondeEuMoro()">Onde eu moro</button>
+</body>
+</html>
+
+<script>
+    function ondeEuMoro(){
+        alert("Seu logradouro é " + ipt_rua.value + " O número do seu logradouro é " + ipt_numero.value);
+    }
+</script>
