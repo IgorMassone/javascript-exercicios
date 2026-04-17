@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let dados = [10, 20, 30, 40, 50];
+        let posicao = 1;
+
+        console.log(dados);
+        let c = 1; // contador
+        for (let i = posicao; i < dados.length - 1; i++) {
+        dados[i] = dados[i + 1];
+        console.log("Vetor na " + (dados.length-i) + "° passagem: " + dados)
+        c++
+        }
+        dados.pop();
+        console.log(dados);
+    </script>
+</body>
+</html>
