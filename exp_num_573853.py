@@ -8,7 +8,7 @@ class No:
 
 
 expressao = input("Digite a expressão numérica: ")
-operadores = ("+", "-", "*", "/", "()")
+operadores = ("+", "-", "*", "/")
 
 def tokenizer(expressao_alg):
     padrao = r'\d+\.\d+|\d+|[+\-*/()]'
@@ -24,6 +24,24 @@ def precedencia(operador):
 
 print(tokenizer(expressao))
 
-def infixa(expressao_alg):
+def to_posfixa(tokens):
     saida = []
     pilha = []
+
+    for t in tokens:
+        if t == "(":
+            pilha.append(t)
+        elif t == ")":
+            while pilha and pilha[-1] != "(":
+                saida.append(pilha.pop())
+            pilha.pop()
+        elif t in operadores:
+            while pilha and pilha[-1] != "(" and precedencia(pilha[-1]) >= precedencia(t):
+                saida.append(pilha.pop())
+            pilha.append(t)
+        else:
+            saida.append(t)
+    while pilha:
+        saida.append(pilha.pop())
+ 
+    return saida
