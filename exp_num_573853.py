@@ -10,11 +10,12 @@ class No:
 expressao = input("Digite a expressão numérica: ")
 operadores = ("+", "-", "*", "/")
 
+# Exercicio 5
 def tokenizer(expressao_alg):
     padrao = r'\d+\.\d+|\d+|[+\-*/()]'
 
     return re.findall(padrao, expressao_alg)
-# 6
+# Exercicio 6
 def precedencia(operador):
     if operador in ('*', '/'):
         return 2
@@ -24,6 +25,7 @@ def precedencia(operador):
 
 print(tokenizer(expressao))
 
+# Exercicio 7
 def to_posfixa(tokens):
     saida = []
     pilha = []
@@ -45,3 +47,19 @@ def to_posfixa(tokens):
         saida.append(pilha.pop())
  
     return saida
+
+# Exercício 8
+def construir_arvore(to_posfixa):
+    pilha = []
+
+    for t in to_posfixa:
+        no = No(t)
+
+        if t in operadores:
+            direita = pilha.pop()
+            esquerda = pilha.pop()
+            no.direita = direita
+            no.esquerda = esquerda
+        pilha.append(no)
+        
+    return pilha.pop()
