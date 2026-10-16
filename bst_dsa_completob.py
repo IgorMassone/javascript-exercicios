@@ -3,12 +3,14 @@ class No:
         self.dado = dado
         self.esquerda = None
         self.direita = None
-        self.altura = 1  # Etapa 1
+        self.altura = 1  # Etapa 1: Acrescentar a altura aos nós (inicia em 1 para folhas)
+
 
 class BST:
     def __init__(self):
         self.raiz = None
 
+    # Etapa 2: Consultar e atualizar a altura
     def altura(self, no):
         if no is None:
             return 0
@@ -19,11 +21,13 @@ class BST:
         altura_direita = self.altura(no.direita)
         no.altura = 1 + max(altura_esquerda, altura_direita)
 
+    # Etapa 3: Calcular o fator de balanceamento
     def fator_balanceamento(self, no):
         if no is None:
             return 0
         return self.altura(no.esquerda) - self.altura(no.direita)
 
+    # Etapa 5: Rotação à direita
     def rotacao_direita(self, y):
         x = y.esquerda
         temp = x.direita
@@ -33,6 +37,7 @@ class BST:
         self.atualizar_altura(x)
         return x
 
+    # Etapa 6: Rotação à esquerda
     def rotacao_esquerda(self, x):
         y = x.direita
         temp = y.esquerda
@@ -42,7 +47,9 @@ class BST:
         self.atualizar_altura(y)
         return y
 
+    # Etapas 7, 8, 9 e 10: Inserção Recursiva com Balanceamento Automático (LL, RR, LR, RL)
     def inserir_recursivo(self, no, dado):
+        # Inserção convencional da BST
         if no is None:
             return No(dado)
         if dado < no.dado:
@@ -52,20 +59,24 @@ class BST:
         else:
             return no  # Duplicatas não são inseridas
 
+        # Atualizar altura e verificar balanceamento (na volta da recursão)
         self.atualizar_altura(no)
         fb = self.fator_balanceamento(no)
 
-        # Caso LL
+        # Caso LL (Esquerda-Esquerda)
         if fb > 1 and dado < no.esquerda.dado:
             return self.rotacao_direita(no)
-        # Caso RR
+        
+        # Caso RR (Direita-Direita)
         if fb < -1 and dado > no.direita.dado:
             return self.rotacao_esquerda(no)
-        # Caso LR
+        
+        # Caso LR (Esquerda-Direita)
         if fb > 1 and dado > no.esquerda.dado:
             no.esquerda = self.rotacao_esquerda(no.esquerda)
             return self.rotacao_direita(no)
-        # Caso RL
+        
+        # Caso RL (Direita-Esquerda)
         if fb < -1 and dado < no.direita.dado:
             no.direita = self.rotacao_direita(no.direita)
             return self.rotacao_esquerda(no)
@@ -75,6 +86,7 @@ class BST:
     def inserir(self, dado):
         self.raiz = self.inserir_recursivo(self.raiz, dado)
 
+    # Métodos fundamentais mantidos da BST original (Etapa 15)
     def buscar(self, dado):
         atual = self.raiz
         while atual is not None:
@@ -99,7 +111,7 @@ class BST:
             return None
         atual = self.raiz
         while atual.direita is not None:
-            atual = atual.direita  
+            atual = atual.direita  # Corrigido o erro de digitação do código base
         return atual.dado
 
     def em_ordem(self, no):
@@ -131,6 +143,7 @@ class BST:
             
         return no
 
+    # Etapa 10: Visualizar a árvore estruturada com Altura e Fator de Balanceamento
     def mostrar(self, no, nivel=0):
         if no is None:
             return
@@ -138,9 +151,7 @@ class BST:
         print("    " * nivel + str(no.dado) + f" (h={no.altura}, FB={self.fator_balanceamento(no)})")
         self.mostrar(no.esquerda, nivel + 1)
 
-    # ==========================================
-    # ETAPA 12 — Validar toda a árvore
-    # ==========================================
+    # Etapa 12: Validar toda a árvore
     def verificar_balanceamento(self, no):
         if no is None:
             return True
@@ -154,28 +165,49 @@ class BST:
 
 
 # ==========================================
-# TESTES, ETAPA 13 (Comparação BST vs AVL) E MENU
+# EXECUÇÃO DAS ETAPAS DE TESTES E COMPARAÇÕES
 # ==========================================
 
-# 1. Teste inicial com os valores propostos no tutorial
-arvore = BST()
-valores_iniciais = [
-    61, 43, 77,
-    16, 55, 69, 85,
-    11, 31, 49, 59,
-    65, 73, 81, 89
-]
-for valor in valores_iniciais:
-    arvore.inserir(valor)
+print("=== ETAPA 11: TESTES OBRIGATÓRIOS DOS 4 CASOS ===")
 
-print("Em ordem (Árvore Principal):")
-arvore.em_ordem(arvore.raiz)
-print(f"\nA árvore está balanceada? {arvore.verificar_balanceamento(arvore.raiz)}")
+# Caso LL
+arvore_ll = BST()
+for v in [30, 20, 10]:
+    arvore_ll.inserir(v)
+print(f"Caso LL [30, 20, 10] -> Raiz: {arvore_ll.raiz.dado} (Esperado: 20)")
 
-# 2. ETAPA 13 — Comparar BST Convencional e AVL (Sequência de 1 a 100)
-print("\n--- ETAPA 13: Comparação BST vs AVL (1 a 100) ---")
+# Caso RR
+arvore_rr = BST()
+for v in [10, 20, 30]:
+    arvore_rr.inserir(v)
+print(f"Caso RR [10, 20, 30] -> Raiz: {arvore_rr.raiz.dado} (Esperado: 20)")
 
-# Criando uma BST convencional puramente iterativa para simular o pior caso (degenerada em linha reta)
+# Caso LR
+arvore_lr = BST()
+for v in [30, 10, 20]:
+    arvore_lr.inserir(v)
+print(f"Caso LR [30, 10, 20] -> Raiz: {arvore_lr.raiz.dado} (Esperado: 20)")
+
+# Caso RL
+arvore_rl = BST()
+for v in [10, 30, 20]:
+    arvore_rl.inserir(v)
+print(f"Caso RL [10, 30, 20] -> Raiz: {arvore_rl.raiz.dado} (Esperado: 20)")
+
+print("\n--- Teste da Estrutura Completa [10, 20, 30, 40, 50, 25] ---")
+arvore_teste = BST()
+for valor in [10, 20, 30, 40, 50, 25]:
+    arvore_teste.inserir(valor)
+print(f"Raiz esperada: 30 | Raiz atual: {arvore_teste.raiz.dado}")
+print(f"Altura total: {arvore_teste.raiz.altura} (Esperado: 3)")
+print("Percurso em ordem: ", end="")
+arvore_teste.em_ordem(arvore_teste.raiz)
+print("\n")
+
+
+# Etapa 13 — Comparar BST Convencional e AVL (Sequência 1 a 100)
+print("--- ETAPA 13: Comparação BST Convencional vs AVL (1 a 100) ---")
+
 class BSTConvencional:
     def __init__(self):
         self.raiz = None
@@ -206,12 +238,27 @@ for i in range(1, 101):
     bst_ruim.inserir(i)
     avl_perfeita.inserir(i)
 
-print(f"Altura da BST Convencional com 100 elementos ordenados: {bst_ruim.raiz.altura if bst_ruim.raiz else 0} (vira uma lista ligada!)")
-print(f"Altura da Árvore AVL com 100 elementos ordenados: {avl_perfeita.raiz.altura if avl_perfeita.raiz else 0} (garante log(n))")
+print(f"Altura da BST Convencional (Degenerada): {bst_ruim.raiz.altura if bst_ruim.raiz else 0}")
+print(f"Altura da Árvore AVL (Auto-balanceada): {avl_perfeita.raiz.altura if avl_perfeita.raiz else 0}")
 print("--------------------------------------------------\n")
 
 
-# --- MENU INTERATIVO ---
+# ==========================================
+# ÁRVORE PRINCIPAL E MENU INTERATIVO (TAREFA)
+# ==========================================
+
+arvore = BST()
+valores_iniciais = [
+    61, 43, 77,
+    16, 55, 69, 85,
+    11, 31, 49, 59,
+    65, 73, 81, 89
+]
+for valor in valores_iniciais:
+    arvore.inserir(valor)
+
+print("--- Árvore Principal Iniciada com Sucesso ---")
+
 while True:
     print("\n=== MENU AVL ===")
     print("1 - Inserir valor")
@@ -220,8 +267,8 @@ while True:
     print("4 - Mostrar menor valor")
     print("5 - Mostrar maior valor")
     print("6 - Remover valor")
-    print("7 - Mostrar árvore visualmente (com Altura e FB)")
-    print("8 - Verificar se a árvore está balanceada")
+    print("7 - Mostrar árvore visualmente (Alturas e FB)")
+    print("8 - Verificar balanceamento global")
     print("9 - Encerrar")
 
     opcao = input("Escolha uma opção: ")
@@ -264,8 +311,8 @@ while True:
         arvore.mostrar(arvore.raiz)
 
     elif opcao == "8":
-        balanceada = arvore.verificar_balanceamento(arvore.raiz)
-        print(f"Status de balanceamento da árvore: {'Válida (Balanceada)' if balanceada else 'Inválida (Desbalanceada)'}")
+        valida = arvore.verificar_balanceamento(arvore.raiz)
+        print(f"Árvore 100% balanceada e válida? {valida}")
 
     elif opcao == "9":
         print("Encerrando o programa.")
